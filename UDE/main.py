@@ -12,21 +12,26 @@ CT.set_default_color_theme("green")
 
 
 def create_database_win():
-
     def create_db():
         try:
             database_entry = entry.get()
             db = m.connect(host="localhost", user="root", password="toor")
             c = db.cursor()
             c.execute(f"create database {database_entry};")
-            messagebox.showinfo("Database Created", f"Database {database_entry} has been successfuly created!")
+            messagebox.showinfo(
+                "Database Created",
+                f"Database {database_entry} has been successfuly created!",
+            )
 
         except:
-            messagebox.showerror("Invalid Input",f"Database {database_entry} cannot be created. {database_entry} database already exists or check your input")
+            messagebox.showerror(
+                "Invalid Input",
+                f"Database {database_entry} cannot be created. {database_entry} database already exists or check your input",
+            )
 
     heading_label = CT.CTkLabel(
         frame, text="C R E A T E  DA T A B A S E", text_font=("Anurati", 24)
-    ).grid(row=0, column=0, columnspan=3, pady=(30, 20), padx = (10,10))
+    ).grid(row=0, column=0, columnspan=3, pady=(30, 20), padx=(10, 10))
 
     subheading_label = CT.CTkLabel(
         frame,
@@ -53,6 +58,7 @@ def create_database_win():
     ).grid(row=3, column=0, columnspan=3, pady=(30, 40))
 
     frame.place(relx=0.5, rely=0.5, anchor=CENTER)
+
 
 create_database_win()
 
