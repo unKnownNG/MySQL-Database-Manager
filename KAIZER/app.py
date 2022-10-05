@@ -9,10 +9,7 @@ import os
 
 PATH = os.path.dirname(os.path.realpath(__file__))
 
-CT.set_default_color_theme(
-    PATH + "/theme.json"
-)
-
+CT.set_default_color_theme(PATH + "/theme.json")
 
 
 class App(CT.CTk):
@@ -21,17 +18,12 @@ class App(CT.CTk):
         self.ButtonFont = "Aerial"
         self.navBarFont = "monospace", 20
         self.title("KAIZER")
-        self.minsize(800,600)
-
-        imgBg = Image.open(
-            PATH +"/img/image.jpg"
-        )
+        self.minsize(800, 600)
+        imgBg = Image.open(PATH + "/img/image.jpg")
         self.bg_image = ImageTk.PhotoImage(imgBg)
-        imageBackBtn = Image.open(
-            PATH + "/img/back.PNG"
-        ).resize((30, 30))
+        imageBackBtn = Image.open(PATH + "/img/back.PNG").resize((30, 30))
         self.photoBackBtn = ImageTk.PhotoImage(imageBackBtn)
-
+        self.iconbitmap(PATH + "/img/icon.ico")
         self.bg = CT.CTkLabel(image=self.bg_image).place(
             relx=0.5, rely=0.5, anchor=CENTER
         )
@@ -102,9 +94,9 @@ class App(CT.CTk):
             self.cur.execute(f"use {dataBase}; ")
             self.cur.execute(f"select * from {table};")
             records = self.cur.fetchall()
-            with open(PATH +"/records.txt","w") as f:
+            with open(PATH + "/records.txt", "w") as f:
                 for i in records:
-                    f.write(str(i)+"\n")
+                    f.write(str(i) + "\n")
             self.viewTableFrm.destroy()
             self.sliderFun()
             self.progress()
@@ -159,7 +151,7 @@ class App(CT.CTk):
         viewTableButton = CT.CTkButton(
             self.viewTableFrm,
             text="View Records",
-            command= self.viewTableFun,
+            command=self.viewTableFun,
             text_font=("Arial", 16),
         ).grid(row=4, column=0, columnspan=3, pady=(30, 40))
 
@@ -174,9 +166,7 @@ class App(CT.CTk):
             command=lambda: self.back(self.viewTableFrm, self.tableHomeWin()),
         ).place(x=0, y=0)
 
-        self.viewTableFrm.place(relx = 0.5, rely = 0.5, anchor = CENTER)
-
-
+        self.viewTableFrm.place(relx=0.5, rely=0.5, anchor=CENTER)
 
     def deleteTable(self):
         self.tableHomeFrame.destroy()
@@ -244,11 +234,17 @@ class App(CT.CTk):
         self.tableHomeFrame = CT.CTkFrame(self)
 
         createTableBtn = CT.CTkButton(
-            self.tableHomeFrame, text="Create Table", text_font=(self.ButtonFont, 20), state = "disabled"
+            self.tableHomeFrame,
+            text="Create Table",
+            text_font=(self.ButtonFont, 20),
+            state="disabled",
         ).grid(row=0, column=0, columnspan=3, pady=(60, 40), padx=80)
 
         alterTableBtn = CT.CTkButton(
-            self.tableHomeFrame, text="View Records", text_font=(self.ButtonFont, 20), command = self.viewTable
+            self.tableHomeFrame,
+            text="View Records",
+            text_font=(self.ButtonFont, 20),
+            command=self.viewTable,
         ).grid(row=1, column=0, columnspan=3, pady=40, padx=80)
 
         deleteTableBtn = CT.CTkButton(
@@ -318,31 +314,31 @@ class App(CT.CTk):
         create_db_heading_label = CT.CTkLabel(
             self.createDBWin,
             text="C R E A T E  DA T A B A S E",
-            text_font=("Anurati", 24),
-        ).grid(row=0, column=0, columnspan=3, pady=(30, 20), padx=(10, 10))
+            text_font=("Anurati", 26),
+        ).grid(row=0, column=0, columnspan=3, pady=(60, 20), padx=(60, 60))
 
         create_db_subheading_label = CT.CTkLabel(
             self.createDBWin,
             text="Enter the following details to create the database",
-            text_font=("Arial", 12),
-        ).grid(row=1, column=0, columnspan=3, pady=(0, 30))
+            text_font=("aerial", 16),
+        ).grid(row=1, column=0, columnspan=3, pady=(20, 30))
 
         create_db_database_name = CT.CTkLabel(
-            self.createDBWin, text="NAME", text_font=("anurati", 18)
-        ).grid(row=2, column=0, pady=10, padx=(20, 0))
+            self.createDBWin, text="NAME", text_font=("anurati", 22)
+        ).grid(row=2, column=0, pady=30, padx=(20, 0))
 
         createDBEntry = CT.CTkEntry(
-            self.createDBWin, text_font=("Arial", 16), width=250, corner_radius=20
+            self.createDBWin, text_font=("aeial", 20), width=280, corner_radius=20
         )
 
-        createDBEntry.grid(row=2, column=1, pady=10, padx=(0, 60))
+        createDBEntry.grid(row=2, column=1, pady=30, padx=(0, 60))
 
         create_db_button = CT.CTkButton(
             self.createDBWin,
             text="Create Database",
             command=self.createDataBaseFun,
-            text_font=("Arial", 16),
-        ).grid(row=3, column=0, columnspan=3, pady=(30, 40))
+            text_font=("aerial", 20),
+        ).grid(row=3, column=0, columnspan=3, pady=(30, 60))
 
         backBtn = CT.CTkButton(
             self.createDBWin,
@@ -469,6 +465,80 @@ class App(CT.CTk):
 
         self.dataBaseOptionFrame.place(relx=0.5, rely=0.5, anchor=CENTER)
 
+    def aboutDeveloper(self):
+        self.navBarDestroy()
+        self.aboutDeveloperWin = CT.CTkFrame(self)
+
+        headingLabel = CT.CTkLabel(
+            self.aboutDeveloperWin,
+            text="D E V E L O P M E N T   T E A M",
+            text_font=("anurati", 28),
+        ).grid(row=0, column=0, padx=40, pady=(50, 15))
+
+        description = "This is a Project created using Python by the following DEVS"
+        descriptionLabel = CT.CTkLabel(
+            self.aboutDeveloperWin, text=description, text_font=("aerial", 14)
+        ).grid(row=1, column=0, pady=(10, 30), padx=20)
+
+        teamMembersLabel1 = CT.CTkLabel(
+            self.aboutDeveloperWin,
+            text="MOHAMMED DAI YAAN",
+            text_font=("anurati", 20),
+            text_color="#ef233c",
+        ).grid(row=2, column=0, pady=(10, 5))
+
+        teamMembersLabel2 = CT.CTkLabel(
+            self.aboutDeveloperWin,
+            text="SALMAN GURSHID",
+            text_font=("anurati", 20),
+            text_color="#ef233c",
+        ).grid(row=3, column=0, pady=5)
+
+        teamMembersLabel3 = CT.CTkLabel(
+            self.aboutDeveloperWin,
+            text="V I DYAKAR",
+            text_font=("anurati", 20),
+            text_color="#ef233c",
+        ).grid(row=4, column=0, pady=(5, 10))
+
+        rateUsLabel = CT.CTkLabel(
+            self.aboutDeveloperWin,
+            text="RATE US USING THE SLIDER!",
+            text_font=("aerial", 16, "bold"),
+        ).grid(row=5, column=0, pady=(25, 0))
+
+        slider = CT.CTkSlider(
+            self.aboutDeveloperWin,
+            height=30,
+            width=400,
+            fg_color="red",
+            button_hover_color="pink",
+            progress_color="gold",
+        ).grid(row=6, column=0, pady=(5, 10))
+
+        rateBtn = CT.CTkButton(
+            self.aboutDeveloperWin,
+            text="Rate!",
+            command=lambda: messagebox.showinfo(
+                "Thank You For Your Feedback",
+                "Your response will help us in further development of the KAIZER",
+            ),
+        )
+        rateBtn.grid(row=7, column=0, pady=(0, 40))
+
+        backBtn = CT.CTkButton(
+            self.aboutDeveloperWin,
+            text="",
+            fg_color="#171520",
+            height=30,
+            width=30,
+            image=self.photoBackBtn,
+            text_font=("aerial", 18),
+            command=lambda: self.back(self.aboutDeveloperWin, self.homeWindow()),
+        ).place(x=0, y=0)
+
+        self.aboutDeveloperWin.place(relx=0.5, rely=0.5, anchor=CENTER)
+
     def login(self):
         global mysql_con
 
@@ -541,6 +611,7 @@ class App(CT.CTk):
             text_font=("anurati", 16),
             hover_color="#ef233c",
             corner_radius=0,
+            command=self.aboutDeveloper,
         )
         self.loginBtn.grid(row=0, column=3)
 
@@ -565,14 +636,33 @@ class App(CT.CTk):
             self.loginFrame, text_font=("Anurati", 20), width=250, corner_radius=20
         )
         login_passwrd_entry.grid(row=2, column=1, padx=(0, 30))
+        loginCheckBoxLabel = CT.CTkLabel(
+            self.loginFrame,
+            text="AGREE OUR TERMS AND CONDITION",
+            text_font=("Calibri", 12),
+        ).grid(row=3, column=0, padx=(20, 0), pady=(30, 5), columnspan=3)
+        loginCheckBox = CT.CTkCheckBox(
+            self.loginFrame,
+            text="I Agree",
+            text_font=("Calibri", 14),
+            fg_color="#e71d36",
+            border_color="#35EFDF",
+        ).grid(row=4, column=0, padx=(0, 20), pady=5)
+        loginRadio = CT.CTkSwitch(
+            self.loginFrame,
+            text="I Agree",
+            text_font=("Calibri", 14),
+            height=24,
+            width=50,
+        ).grid(row=4, column=1)
         login_button = CT.CTkButton(
             self.loginFrame,
             text="LOGIN",
             text_font=("arial bold", 20),
             command=self.login,
-        ).grid(row=3, column=0, columnspan=3, pady=(40, 20))
+        ).grid(row=5, column=0, columnspan=3, pady=(40, 20))
         self.loginFrame.place(relx=0.5, rely=0.5, anchor=CENTER)
 
 
-a = App()
-a.mainloop()
+KAIZER = App()
+KAIZER.mainloop()
