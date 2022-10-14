@@ -8,8 +8,10 @@ import os
 
 
 PATH = os.path.dirname(os.path.realpath(__file__))
-
 CT.set_default_color_theme(PATH + "/theme.json")
+imgBg = Image.open(PATH + "/img/image.jpg")
+imageBackBtn = Image.open(PATH + "/img/back.PNG").resize((30, 30))
+appIcon = PATH + "/img/icon.ico"
 
 
 class App(CT.CTk):
@@ -19,11 +21,9 @@ class App(CT.CTk):
         self.navBarFont = "monospace", 20
         self.title("KAIZER")
         self.minsize(800, 600)
-        imgBg = Image.open(PATH + "/img/image.jpg")
         self.bg_image = ImageTk.PhotoImage(imgBg)
-        imageBackBtn = Image.open(PATH + "/img/back.PNG").resize((30, 30))
         self.photoBackBtn = ImageTk.PhotoImage(imageBackBtn)
-        self.iconbitmap(PATH + "/img/icon.ico")
+        self.iconbitmap(appIcon)
         self.bg = CT.CTkLabel(image=self.bg_image).place(
             relx=0.5, rely=0.5, anchor=CENTER
         )
@@ -108,7 +108,6 @@ class App(CT.CTk):
             messagebox.showerror("Error 404", "Please check your input")
 
     def viewTable(self):
-        self.tableHomeFrame.destroy()
         self.viewTableFrm = CT.CTkFrame(self)
 
         viewTableHeading = CT.CTkLabel(
@@ -169,7 +168,6 @@ class App(CT.CTk):
         self.viewTableFrm.place(relx=0.5, rely=0.5, anchor=CENTER)
 
     def deleteTable(self):
-        self.tableHomeFrame.destroy()
         self.deleteTableFrm = CT.CTkFrame(self)
 
         delTableHeading = CT.CTkLabel(
@@ -244,14 +242,14 @@ class App(CT.CTk):
             self.tableHomeFrame,
             text="View Records",
             text_font=(self.ButtonFont, 20),
-            command=self.viewTable,
+            command=lambda: self.back(self.tableHomeFrame, self.viewTable()),
         ).grid(row=1, column=0, columnspan=3, pady=40, padx=80)
 
         deleteTableBtn = CT.CTkButton(
             self.tableHomeFrame,
             text="Delete Table",
             text_font=(self.ButtonFont, 20),
-            command=self.deleteTable,
+            command=lambda: self.back(self.tableHomeFrame, self.deleteTable()),
         ).grid(row=2, column=0, columnspan=3, padx=80, pady=(40, 60))
 
         backBtn = CT.CTkButton(
@@ -287,9 +285,11 @@ class App(CT.CTk):
             )
 
     def deleteDataBaseFun(self):
+        name = self.login_name_entry
+        password = self.login_passwrd_entry
         try:
             databaseEntry = deleteDBEntry.get()
-            db = m.connect(host="localhost", user="root", password="toor")
+            db = m.connect(host="localhost", user=name, password=password)
             c = db.cursor()
             c.execute(f"drop database {databaseEntry};")
             self.deleteDBFrame.destroy()
@@ -357,15 +357,24 @@ class App(CT.CTk):
         self.alterDBFrame = CT.CTkFrame(self)
 
         createTableBtn = CT.CTkButton(
-            self.alterDBFrame, text="Create Table", text_font=(self.ButtonFont, 20)
+            self.alterDBFrame,
+            text="Create Table",
+            text_font=(self.ButtonFont, 20),
+            state="disabled",
         ).grid(row=0, column=0, columnspan=3, pady=(60, 40), padx=80)
 
         alterTableBtn = CT.CTkButton(
-            self.alterDBFrame, text="Alter Table", text_font=(self.ButtonFont, 20)
+            self.alterDBFrame,
+            text="Alter Table",
+            text_font=(self.ButtonFont, 20),
+            command=lambda: self.back(self.alterDBFrame, self.viewTable()),
         ).grid(row=1, column=0, columnspan=3, pady=40, padx=80)
 
         deleteTableBtn = CT.CTkButton(
-            self.alterDBFrame, text="Delete Table", text_font=(self.ButtonFont, 20)
+            self.alterDBFrame,
+            text="Delete Table",
+            text_font=(self.ButtonFont, 20),
+            command=lambda: self.back(self.alterDBFrame, self.deleteTable()),
         ).grid(row=2, column=0, columnspan=3, padx=80, pady=(40, 60))
 
         backBtn = CT.CTkButton(
@@ -541,14 +550,11 @@ class App(CT.CTk):
 
     def login(self):
         global mysql_con
-
-        login_user = login_name_entry.get()
-        login_password = login_passwrd_entry.get()
+        name = self.login_name_entry.get()
+        password = self.login_passwrd_entry.get()
 
         try:
-            mysql_con = m.connect(
-                user=login_user, host="localhost", password=login_password
-            )
+            mysql_con = m.connect(user=name, host="localhost", password=password)
             self.cur = mysql_con.cursor()
             messagebox.showinfo(
                 "Sucessfully connected", "You have logged into mysql server"
@@ -616,7 +622,6 @@ class App(CT.CTk):
         self.loginBtn.grid(row=0, column=3)
 
     def loginWindow(self):
-        global login_name_entry, login_passwrd_entry
 
         self.loginFrame = CT.CTkFrame(self, image=self.bg)
         login_heading_label = CT.CTkLabel(
@@ -625,17 +630,17 @@ class App(CT.CTk):
         login_name_label = CT.CTkLabel(
             self.loginFrame, text="NAME", text_font=("Anurati", 20)
         ).grid(row=1, column=0, pady=(0, 30))
-        login_name_entry = CT.CTkEntry(
+        self.login_name_entry = CT.CTkEntry(
             self.loginFrame, text_font=("Anurati", 20), width=250, corner_radius=20
         )
-        login_name_entry.grid(row=1, column=1, pady=(0, 30), padx=(0, 30))
+        self.login_name_entry.grid(row=1, column=1, pady=(0, 30), padx=(0, 30))
         login_passwrd_label = CT.CTkLabel(
             self.loginFrame, text="PASSWORD", text_font=("Anurati", 20)
         ).grid(row=2, column=0, padx=(30, 20), pady=(20, 20))
-        login_passwrd_entry = CT.CTkEntry(
+        self.login_passwrd_entry = CT.CTkEntry(
             self.loginFrame, text_font=("Anurati", 20), width=250, corner_radius=20
         )
-        login_passwrd_entry.grid(row=2, column=1, padx=(0, 30))
+        self.login_passwrd_entry.grid(row=2, column=1, padx=(0, 30))
         loginCheckBoxLabel = CT.CTkLabel(
             self.loginFrame,
             text="AGREE OUR TERMS AND CONDITION",
@@ -663,6 +668,6 @@ class App(CT.CTk):
         ).grid(row=5, column=0, columnspan=3, pady=(40, 20))
         self.loginFrame.place(relx=0.5, rely=0.5, anchor=CENTER)
 
-
-KAIZER = App()
-KAIZER.mainloop()
+if __name__ == "__main__":
+    KAIZER = App()
+    KAIZER.mainloop()
