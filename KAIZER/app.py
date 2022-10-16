@@ -9,6 +9,7 @@ import os
 
 PATH = os.path.dirname(os.path.realpath(__file__))
 CT.set_default_color_theme(PATH + "/theme.json")
+CT.set_appearance_mode("dark")
 imgBg = Image.open(PATH + "/img/image.jpg")
 imageBackBtn = Image.open(PATH + "/img/back.PNG").resize((30, 30))
 appIcon = PATH + "/img/icon.ico"
@@ -27,7 +28,6 @@ class App(CT.CTk):
         self.bg = CT.CTkLabel(image=self.bg_image).place(
             relx=0.5, rely=0.5, anchor=CENTER
         )
-
         self.loginWindow()
 
     @classmethod
@@ -285,13 +285,9 @@ class App(CT.CTk):
             )
 
     def deleteDataBaseFun(self):
-        name = self.login_name_entry
-        password = self.login_passwrd_entry
         try:
             databaseEntry = deleteDBEntry.get()
-            db = m.connect(host="localhost", user=name, password=password)
-            c = db.cursor()
-            c.execute(f"drop database {databaseEntry};")
+            self.cur.execute(f"drop database {databaseEntry};")
             self.deleteDBFrame.destroy()
             self.sliderFun()
             self.progress()
@@ -365,7 +361,7 @@ class App(CT.CTk):
 
         alterTableBtn = CT.CTkButton(
             self.alterDBFrame,
-            text="Alter Table",
+            text="View Table",
             text_font=(self.ButtonFont, 20),
             command=lambda: self.back(self.alterDBFrame, self.viewTable()),
         ).grid(row=1, column=0, columnspan=3, pady=40, padx=80)
