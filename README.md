@@ -59,12 +59,33 @@ The Ultimate Database Manager simplifies database operations, making it accessib
 
 ---
 
+## 🖼️ Screenshots
 
+### 🧭 Main Interface  
+![Main Interface](Screenshots/home_win.jpg)
+
+### 🏗️ Create Database  
+![Create Database](Screenshots/db_create.jpg)
+
+### 🔐 Sign In  
+![Sign in](Screenshots/signin_win.jpg)
+
+### 💬 Feedback  
+![Feedback](Screenshots/review_win.jpg)
+
+### 🗄️ Database Options  
+![Database Options](Screenshots/db_win.jpg)
+
+### ⏳ Loading  
+![Loading](Screenshots/loading.jpg)
+
+---
 
 ## 🌟 Contributing  
 We welcome contributions! Please submit a pull request or open an issue for suggestions and improvements.  
 
 ---
+
 
 
 ## 🙏 Acknowledgments  
